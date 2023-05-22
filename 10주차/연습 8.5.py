@@ -1,5 +1,6 @@
+import random
+
 def lotto645():
-    import random
     numbers = []
     for _ in range(6):
         number = random.randrange(1,46)
@@ -9,7 +10,7 @@ def lotto645():
     numbers.sort()
     for number in numbers:
         if number < 10:
-            print("0"+str(number), end=" ")
+            print("0" + str(number), end=" ")
         else:
             print(number, end=" ")
     print()
