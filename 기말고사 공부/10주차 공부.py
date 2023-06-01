@@ -204,3 +204,38 @@ def get_integer(message, i, j):
     return int(number)
 
 sudoku_mini()
+
+# 연습 8.5 로또 6/45
+## 나의 답
+def lotto645():
+    for _ in range(6):
+        numbers = []
+        numbers2 = []
+        for _ in range(6):
+            k = random.randrange(1,46)
+            while k in numbers2:
+                k = random.randrange(1,46)
+            numbers2.append(k)
+            if k < 10:
+                k = "0" + str(k)
+            else:
+                k = str(k)
+            numbers.append(k)
+        numbers.sort()
+        print(numbers)
+
+## 솔루션
+def lotto645():
+    numbers = []
+    for _ in range(6):
+        number = random.randrange(1,46)
+        while number in numbers:
+            number = random.randrange(1,46)
+        numbers.append(number)
+    numbers.sort
+    for number in numbers:
+        if number < 10:
+            print("0" + str(number), end=" ")
+        else:
+            print(number, end=" ")
+    print()
