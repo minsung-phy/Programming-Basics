@@ -254,3 +254,30 @@ def store_members(members):
     file.close()
 
 # 실습 9.6 로그인 함수
+def safe_divide(x, y):
+    return x/y if y > 0 else 0
+
+def login(members):
+    username = input("Enter your name: (4 letters max) ")
+    while len(username) > 4:
+        username = input("Enter your name: (4 letters max)")
+    trypasswd = input("Enter your password: ")
+    if username in members.keys(): 
+        if trypasswd == members[username][0]: 
+            tries = members[username][1]
+            wins = [username][2]
+            chips = [username][3]
+            print("You played", tries, "games and won", wins, "of them.")
+            wpercent = safe_divide(wins, tries) * 100
+            print("Your all-time winning percentage is", "{0:.1f}".format(wpercent), "%.")
+            if chips > 0:
+                print("You have", chips, "chips.")
+            else:
+                print("You have owe", -chips, "chips.")
+            return username, tries, wins, chips, members
+        else:
+            return login(members)
+    else:
+        members[username] = (trypasswd, 0, 0, 0)
+        return username, 0, 0, 0, members
+
