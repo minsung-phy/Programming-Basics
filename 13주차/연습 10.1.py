@@ -1,10 +1,12 @@
+# 연습 10.1 퍼즐 게임 미니 스도쿠 예외 처리 추가
 import random
+import time
 
-def initialize_board_4x4():
-    row0 = [1, 2, 3, 4]
+def initialize_board_4x4(): 
+    row0 = [1,2,3,4]
     random.shuffle(row0)
     row1 = row0[2:4] + row0[0:2]
-    row2 = [row0[1], row0[0], row0[3], row0[2]]
+    row2 = [row0[1],row0[0],row0[3],row0[2]]
     row3 = row2[2:4] + row2[0:2]
     return [row0, row1, row2, row3]
 
@@ -55,7 +57,7 @@ def make_holes(board, no_of_holes):
         j = random.randint(0,3)
         if board[i][j] != 0:
             board[i][j] = 0
-            no_of_holes = no_of_holes - 1
+            no_of_holes -= 1  
     return board
 
 def show_board(board):
@@ -67,29 +69,24 @@ def show_board(board):
                 print(entry, end=' ')
         print()
 
-def get_integer(message, i, j):
-    number = input(message)
-    while not (number.isdigit() and i <= int(number) <= j):
-        number = input(message)
-    return int(number)
-
-def sudoku_mini():
+def sudoku_4x4():
     solution_board = create_solution_board_4x4()
     puzzle_board = copy_board(solution_board)
     no_of_holes = get_level()
     puzzle_board = make_holes(puzzle_board, no_of_holes)
     show_board(puzzle_board)
+    start = time.time()
     while no_of_holes > 0:
         while True:
             try:
-                i = int(input(("Row#(1,2,3,4): "))) - 1
-                assert 0 <= i <= 3
+                i = int(input("Row#(1,2,3,4): ")) - 1
                 j = int(input("Column#(1,2,3,4): ")) - 1
+                assert 0 <= i <= 3
                 assert 0 <= j <= 3
             except ValueError:
                 print("Not a number.")
             except AssertionError:
-                print("Not in range.")
+                print("Not in a range. (range : '1 <= row, column <= 4')")
             else:
                 if puzzle_board[i][j] != 0:
                     print("Not empty!")
@@ -101,15 +98,19 @@ def sudoku_mini():
                     except ValueError:
                         print("Not a number.")
                     except AssertionError:
-                        print("Not in range.")
-                    else: 
+                        print("Not in a range. (range : '1 <= Number <= 4')")
+                    else:
                         if n == solution_board[i][j]:
                             puzzle_board[i][j] = solution_board[i][j]
                             show_board(puzzle_board)
                             no_of_holes -= 1
-                            break
                         else:
                             print(n, ": Wrong number! Try again.")
+                        break
+                    break
+                break
+    end = time.time()
+    print("It took you", round(end - start, 2), "seconds to complete the game.")
     print("Well done! Come again.")
 
-sudoku_mini()
+sudoku_4x4()
