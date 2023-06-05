@@ -281,3 +281,81 @@ def login(members):
         members[username] = (trypasswd, 0, 0, 0)
         return username, 0, 0, 0, members
 
+# 딕셔너리 정렬하기 - sorted 함수 사용법
+# 실습 9.7 함수를 작성하기 위해서 members 딕셔너리의 아이템을 칩의 보유개수를 순으로 정렬해야 한다. 이 용도로 사용할 수 있는 sorted라는 내장 함수가 있다.
+# Ex) 뮤지션 이름을 키로 하고, 대표 음반 타이틀과 발매년도의 튜플을 값으로 하여 아래와 같이 딕셔너리로 모아서 albums 변수로 지정한다.
+albums = {}
+albums["Pink Floyd"] = ("Dark Side of the Moon", 1973)
+albums["The Beatles"] = ("Abbey Road", 1969)
+albums["Neil Young"] = ("Harvest", 1972)
+print(albums)
+# sorted 함수를 albums만을 인수로 전달하여 호출하면 키만 정렬하여 리스트로 리턴한다.
+print(sorted(albums)) 
+# 딕셔너리의 아이템 전체를 포함하여 키를 기준으로 정렬하려면 다음과 같이 뷰 객체를 만들어 인수로 전달해야 한다.
+print(sorted(albums.items()))
+# 정렬 기준을 다른 항목으로 바꾸려면, key 옵션을 추가 인수로 명시해야 한다. key 옵션은 다음과 같이 람다 식의 형식으로 정렬 기준 항목을 지정한다.
+print(sorted(albums.items(), key=lambda x: x[0]))
+# 람다 식 lambda x: x[0]은 정렬 대상 리스트의 아이템이 x라면 정렬의 기준을 x[0]으로 하자는 뜻이다. 
+# 따라서 이 경우 뮤지션의 이름이 기준이 된다. 뮤지션의 이름이 키이므로, 옵션을 생략한 경우와 사실상 같다. 
+# 음반 타이틀을 정렬 기준으로 하려면 key 옵션은 다음과 같이 바꾼다.
+print(sorted(albums.items(), key=lambda x: x[1][0]))
+# 발매년도를 정렬 기준으로 하려면 key 옵션은 다음과 같이 바꾼다.
+print(sorted(albums.items(), key=lambda x: x[1][1]))
+# 역순으로 정렬하고 싶으면 reverse 옵션을 다음과 같이 추가한다.
+print(sorted(albums.items(), key=lambda x: x[1][1], reverse=True))
+      
+# 실습 9.7 Top 5 보여주기 함수
+def show_top5(members):
+    print("---")
+    sorted_members = sorted(members.items(), key=lambda x: x[1][3], reverse=True)
+    print("All-time Top 5 based on the number of chips earned.")
+    for i in range(5):
+        sorted_keys = sorted_members[i][0]
+        if sorted_members[i][1][3] > 0:
+            print(i+1, ".", sorted_keys, ":", sorted_members[i][1][3])
+
+members = {"doh": ("sid73", 993, 550, 35), "didi": ("edd484", 130, 55, 10), "hy": ("er878re", 35, 18, 2), "dr": ("qwert", 18, 8, 0), "who": ("poiuy", 34, 18, 0)}
+show_top5(members)
+
+# 연습 9.1 희소 리스트 만들기
+## 내 답
+def sparse(ns):
+    dic = {}
+    index = 0
+    for i in range(len(ns)):
+        if ns[i] != 0:
+            dic[index]= ns[i]
+        index += 1
+    return dic
+
+## 솔루션
+def sparse(ns):
+    dic = {}
+    index = 0
+    for n in ns:
+        if n != 0:
+            dic[index] = n
+        index += 1
+    return dic
+
+# Test code
+print(sparse([]))
+print(sparse([0,0,3,0,0,0,0,0,0,7,0,0]))
+print(sparse([1,0,2,0,0,9,0,0]))
+
+# 연습 9.2 두 희소 리스트 덧셈
+def sparse_add(ms, ns):
+    for key in ms.keys():
+        value = ns.get(key)
+        if value != None:
+            ms[key] += value
+            del ns[key]
+    for key in ns.keys():
+        ms[key] = ns[key]
+    return ms
+
+# Test code
+print(sparse_add({},{}))
+print(sparse_add({2: 3, 9: 7},{}))
+print(sparse_add({},{0: 1, 2: 2, 6: 9}))
+print(sparse_add({2: 3, 9: 7},{0: 1, 2: 2, 6: 9}))
