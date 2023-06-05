@@ -197,4 +197,67 @@ def wordgame():
         print(picked_word)
         print("축하합니다!")
 
-wordgame()
+# 연습 5.9 모음 일련번호 매기기
+def vowel_numbering(word):
+    number = 1
+    newword = ""
+    for c in word:
+        if c in ['a','e','i','o','u','A','E','I','O','U']:
+            newword += str(number)
+            number += 1
+        else:
+            newword += c
+    return newword
+
+# Test code
+print(vowel_numbering('Massachussettes'))
+
+# 연습 5.11 부분 리스트
+## 가. drop_before 함수
+def drop_before(s, index):
+    if s != [] and index > 0:
+        return drop_before(s[1:], index-1)
+    else:
+        return s
+
+def drop_before(s, index):
+    while s != [] and index > 0:
+        s, index = s[1:], index-1
+    return s
+
+## 나. take_before 함수
+def take_before(s, index):
+    if s != [] and index > 0:
+        return [s[0]] + take_before(s[1:], index-1)
+    else:
+        return []
+    
+def take_before(s, index):
+    def loop(s, index, n):
+        if s != [] and index > 0:
+            return loop(s[1:], index-1, n + [s[0]])
+        else:
+            return n
+    return loop(s, index, [])
+
+def take_before(s, index):
+    n = []
+    while s != [] and index > 0:
+        s, index, n = s[1:], index-1, n + [s[0]]
+    return n
+
+# 다. sublist 함수    
+def sublist(s, low, high):
+    if low < 0: low = 0
+    if high < 0: high = 0
+    if low < high:
+        return take_before((drop_before(s, low)), high-low)
+    else:
+        return []
+    
+# Test code
+s = [1,2,3,4,5]
+print(sublist(s,2,4))
+print(sublist(s,0,0))
+print(sublist(s,3,6))
+print(sublist(s,-3,-2))
