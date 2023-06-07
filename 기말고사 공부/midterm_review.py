@@ -56,23 +56,49 @@ def eval(you, com):
 #######
 # 2.2
 def wins_r(game_list):
-    return -1
+    if game_list != []:
+        if eval(game_list[0][0], game_list[0][1]) == 1:
+            return 1 + wins_r(game_list[1:])
+        else:
+            return wins_r(game_list[1:])
+    else:
+        return 0
 
 #######
 # 2.3
 def wins_t(game_list):
-    return -1
+    def loop(game_list, n):
+        if game_list != []:
+            if eval(game_list[0][0], game_list[0][1]) == 1:
+                return loop(game_list[1:], n+1)
+            else:
+                return loop(game_list[1:], n)
+        else:
+            return n 
+    return loop(game_list, 0)
 
 #######
 # 2.4
 def wins_w(game_list):
-    return -1
+    n = 0
+    while game_list != []:
+        if eval(game_list[0][0], game_list[0][1]) == 1:
+            game_list, n = game_list[1:], n+1
+        else:
+            game_list = game_list[1:]
+    return n 
+
 
 #######
 # 2.5
-wins_for_version_is_possible = None
+wins_for_version_is_possible = True
 def wins_f(game_list):
-    return -1
+    n = 0
+    for i in game_list:
+        if eval(i[0], i[1]) == 1:
+            n += 1
+    return n 
+
 
 
 #################################################################
@@ -93,23 +119,59 @@ def wins_f(game_list):
 #######
 # 3.1
 def digit2morse(d):
-    return None
+    if 0 <= d <= 5:
+        return ("." * d) + ("-" * (5-d))
+    else:
+        return ("-" * (d-5)) + ("." * (10-d))
 
 #######
 # 3.2
 def is_digit_morse(m):
-    return None
+    m = m.strip("")
+    return m in [".----","..---","...--","....-",".....","-....","--...","---..","----.","-----"]
 
 #######
 # 3.3
 def morse2digit(m):
-    return None
+    m = m.strip("")
+    if m == ".----":
+        return 1
+    elif m == "..---":
+        return 2
+    elif m == "...--":
+        return 3
+    elif m == "....-":
+        return 4
+    elif m == ".....":
+        return 5
+    elif m == "-....":
+        return 6
+    elif m == "--...":
+        return 7
+    elif m == "---..":
+        return 8
+    elif m == "----.":
+        return 9
+    elif m == "-----":
+        return 0
+    else:
+        return None
 
 #######
 # 3.4
 def morse2number(m):
-    return None
-
+    if m == "":
+        return -1
+    m = m.split()
+    ans = ""
+    for i in m:
+        if morse2digit(i) != None:
+            x = morse2digit(i)
+            ans = ans + str(x)
+        else:
+            return -1
+    ans = int(ans)
+    return ans
 
 ###############################################################
 # 아래 채점 코드를 지우거나 수정하지 마세요.
