@@ -89,3 +89,197 @@ t.close()
 # readlines() / 파일의 현재 위치에서 한 줄씩 끝가지 읽어서 줄의 리스트로 리턴한다.
 # write(s) / 문자열 s를 파일의 현재 위치에 쓴다.
 # writelines(ss) / 문자열 리스트 ss에 있는 문자열을 모두 파일의 현재 위치에 쓴다.
+
+# 문자열 검색
+
+# 문자열 메소드 : 문자열 검색에 유용하게 사용할 수 있는 것
+# 문자열 메소드 / 실행 의미
+# str.find(sub) / str에서 맨 앞에 나타나는 sub의 시작 인덱스를 리턴, 없으면 -1을 리턴
+# str.index(sub) / str에서 맨 앞에 나타나는 sub의 시작 인덱스를 리턴, 없으면 ValueError 오류 발생
+# str.rfind(sub) / str에서 맨 뒤에 나타나는 sub의 시작 인덱스를 리턴, 없으면 -1을 리턴
+# str.startswith(prefix) / str이 prefix로 시작하면 True를 리턴, 그렇지 않으면 False를 리턴
+# str.endswith(suffix) / str이 suffix로 끝나면 True를 리턴, 그렇지 않으면 False를 리턴
+# find는 문자열 전용이고, index는 모든 시퀀스에 공통으로 사용한다.
+
+text = "Your time is limited, so don't waste it living someone else's life."
+print(text.find("me"))
+print(text.find("li"))
+print(text.find("live"))
+print(text.rfind("me"))
+print(text.rfind("li"))
+
+text = "Individual Freedom"
+print(text.startswith("I"))
+print(text.startswith("Indian"))
+print(text.endswith("dom"))
+print(text.endswith("Free"))
+
+# 대상 문자열의 검색 범위를 지정하여 검색 대상을 제한할 수도 있다. 검색 범위의 시작 인덱스와 끝 인덱스를 문자열 조각내기와 동일한 요령으로 인수로 추가하면 된다.
+text = "Your time is limited, so don't waste it living someone else's life."
+print(text.find("me"))
+print(text.find("me", 8))
+print(text.find("me", 8, 49))
+
+# 처음 나타나는 문자열 하나만 찾기:
+# 파일이름 filename과 찾으려는 문자열 x를 인수로 받아서 텍스트 파일에서 문자열 x가 처음 나타나는 위치 인덱스를 "result.txt"라는 이름의 파일에 쓰는 프로시저 find_1st를 만들어보자.
+# 예를 들어 읽어올 텍스트 파일 이름이 "article.txt"이고 찾으려는 문자열이 "computer"이면, find_1st("article.txt", "computer")를 호출하고, 
+# 문자열 "computer"가 텍스트 파일 "article.txt"에서 처음 나타난 인덱스를 "result.txt" 파일에 형식에 맞추어 쓴다. 
+# 만약 없으면 "not found"를 "result.txt" 파일에 형식에 맞추어 쓴다.
+def find_1st(filename, x):
+    infile = open(filename, "r")
+    outfile = open("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/result.txt", "w")
+    text = infile.read()
+    position = text.find(x)
+    if position == -1:
+        outfile.write(x + " is not found.\n")
+    else:
+        outfile.write(x + " is at " + str(position) + " the 1st time.\n")
+    outfile.close()
+    infile.close()
+    print("Done")
+
+# 실습 6.2 find_1st 함수 테스트
+find_1st("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt", "computer")
+find_1st("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt", "Whole Earth")
+find_1st("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt", "Apple")
+find_1st("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt", "apple")
+
+# 둘째로 나타나는 문자열 하나만 찾기
+# 파일이름 filename과 찾으려는 문자열 x를 인수로 받아서 텍스트 파일에서 문자열 x가 둘째로 나타나는 위치 인덱스를 "result.txt"라는 이름의 파일에 쓰는 프로시저 find_2nd를 만들어보자.
+# 예를 들어 읽어올 텍스트 파일 이름이 "article.txt"이고 찾으려는 문자열이 "computer"이면, find_2nd("article.txt", "computer")를 호출하고,
+# 문자열 "computer"가 텍스트 파일 "article.txt"에서 둘쨰로 나타난 인덱스를 "result.txt" 파일에 형식에 맞추어 쓴다. 
+# 만약 없거나 한 번만 나타나면 "not found"를 "result.txt" 파일에 형식에 맞추어 쓴다.
+def find_2nd(filename, x):
+    infile = open(filename, "r")
+    outfile = open("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/result.txt", "w")
+    text = infile.read()
+    position = text.find(x)
+    position = text.find(x, position+1)
+    if position == -1:
+        outfile.write(x + " is not found.\n")
+    else:
+        outfile.write(x + " is at " + str(position) + " the 2nd time.\n")
+    outfile.close()
+    infile.close()
+    print("Done")
+
+# 실습 6.3 find_2nd 함수 테스트
+find_2nd("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt", "computer")
+find_2nd("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt", "Whole Earth")
+find_2nd("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt", "Apple")
+find_2nd("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt", "apple")
+
+# 실습 6.4 마지막 문자열 하나만 찾기
+def find_last(filename, x):
+    infile = open(filename, "r")
+    outfile = open("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/result.txt", "w")
+    text = infile.read()
+    found_most_recent = -1
+    position = text.find(x)
+    while position != -1:
+        found_most_recent = position
+        position = text.find(x, position+1)
+    if found_most_recent == -1:
+        outfile.write(x + " is not found.\n")
+    else:
+        outfile.write(x + " is at " + str(found_most_recent) + " the last time.\n")
+    outfile.close()
+    infile.close()
+    print("Done")
+
+find_last("article.txt", 'computer')   
+
+# 실습 6.5 모두 찾기
+def find_all(filename, x):
+    infile = open(filename, "r")
+    outfile = open("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/result.txt", "w")
+    text = infile.read()
+    position = text.find(x)
+    if position == -1:
+        outfile.write(x + " is not found.\n")
+    while position != -1:
+        outfile.write(x + " is at " + str(position) + " the time.\n")
+        position = text.find(x, position+1)
+    outfile.close()
+    infile.close()
+    print("Done")
+
+find_all("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt", 'computer')  
+
+# 실습 6.6 모두 찾고, 찾은 개수 세기
+def find_all_count(filename, x):
+    infile = open(filename, "r")
+    outfile = open("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/result.txt", "w")
+    text = infile.read()
+    position = text.find(x)
+    count = 0
+    if position == -1:
+        outfile.write(x + " is not found. | count: 0\n")
+    while position != -1:
+        count += 1
+        outfile.write(x + " is at " + str(position) + " the time. | count: " + str(count) + "\n")
+        position = text.find(x, position+1)
+    outfile.close()
+    infile.close()
+    print("Done")
+
+find_all_count("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt", 'computer') 
+
+# 실습 6.7 인용 문장 모두 찾기
+def find_quotes_all(filename):
+    infile = open(filename,"r")
+    outfile = open("/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/result.txt","w")
+    text = infile.read()
+    index = text.find('"')
+    while index != -1:
+        index2 = text.find('"', index+1)
+        outfile.write(text[index:index2+1] + "\n\n")
+        index = text.find('"',index2+1)
+    outfile.close()
+    infile.close()
+    print("Done")
+
+# Test code 
+find_quotes_all('/Users/minsung/Documents/2학년 1학기/프로그래밍기초/기말고사 공부/article.txt')
+
+# 연습 6.5 아이소그램 확인
+def isisogram(x):
+    while x != "" and x[1:] != "":
+        if x[0] in x[1:]:
+            return False
+        else:
+            x = x[1:]
+    return True
+
+# 연습 6.6 아나그램 확인
+def isanagram(word1, word2):
+    while word1 != "":
+        if word1[0] in word2:
+            index = word2.find(word1[0])
+            word1 = word1[1:]
+            word2 = word2[:index] + word2[index+1:]
+        else:
+            return False
+    return word2 == ''
+
+## Test code
+print(isanagram('',''))                 # True
+print(isanagram('z','z'))               # True
+print(isanagram('zz','z'))              # False
+print(isanagram('z','zz'))              # False
+print(isanagram('silent','listen'))     # True
+print(isanagram('silent','listens'))    # False
+print(isanagram('elvis','lives'))       # True
+print(isanagram('restful','fluster'))   # True
+print(isanagram('restfully','fluster')) # False
+print(isanagram('문전박대','대박전문'))      # True
+
+def isanagram(word1, word2):
+    while word1 != "":
+        if word1[0] in word2:
+            index = word2.find(word1[0])
+            word1 = word1[1:]
+            word2 = word2[:index] + word2[index+1:]
+        else:
+            return False
+    return word2 == ''
